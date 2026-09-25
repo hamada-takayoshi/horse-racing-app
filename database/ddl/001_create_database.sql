@@ -1,7 +1,7 @@
-:setvar DatabaseName "HorseRacing"
-
 IF DB_ID(N'$(DatabaseName)') IS NULL
 BEGIN
-    EXEC(N'CREATE DATABASE [' + REPLACE('$(DatabaseName)', ']', ']]') + N']');
+    DECLARE @CreateDatabase nvarchar(max) =
+        N'CREATE DATABASE [' + REPLACE('$(DatabaseName)', ']', ']]') + N']';
+    EXEC(@CreateDatabase);
 END;
 GO

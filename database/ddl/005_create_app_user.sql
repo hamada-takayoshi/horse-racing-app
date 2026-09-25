@@ -1,7 +1,3 @@
-:setvar DatabaseName "HorseRacing"
-:setvar AppLogin "HorseRacingAppUser"
-:setvar AppPassword "CHANGE_ME_APP_PASSWORD"
-
 USE [master];
 GO
 
