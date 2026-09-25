@@ -1,0 +1,13 @@
+.env
+**/bin/
+**/obj/
+.vs/
+.vscode/
+.idea/
+TestResults/
+artifacts/
+*.user
+*.suo
+*.db
+*.bak
+database/raw/
