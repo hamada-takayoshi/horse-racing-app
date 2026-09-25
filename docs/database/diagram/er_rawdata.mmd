@@ -1,0 +1,57 @@
+%% ER図は主要項目のみの抜粋です。完全な定義は docs/tables を参照してください。
+erDiagram
+    RawContent {
+        BIGINT RawContentId PK
+        CHAR ContentHash
+        VARCHAR StorageTypeCode
+    }
+    RawFetch {
+        BIGINT RawFetchId PK
+        BIGINT RawContentId FK
+        INT DataSourceId FK
+        VARCHAR DataTypeCode FK
+        DATETIME2 RetrievedAt
+        NVARCHAR SourceUrl
+    }
+    DataSource {
+        INT DataSourceId PK
+    }
+    Race {
+        BIGINT RaceId PK
+        INT RacecourseId FK
+        VARCHAR WeatherCode FK
+        VARCHAR TrackConditionCode FK
+        VARCHAR RaceClassCode FK
+        VARCHAR RaceGradeCode FK
+        VARCHAR AgeConditionCode FK
+        VARCHAR SexConditionCode FK
+        VARCHAR WeightConditionCode FK
+        DATE RaceDate
+    }
+    RaceEntry {
+        BIGINT RaceEntryId PK
+        BIGINT RaceId FK
+        BIGINT HorseId FK
+        INT JockeyId FK
+        INT TrainerId FK
+        TINYINT HorseNumber
+        TINYINT FrameNumber
+        TINYINT FinishPosition
+        VARCHAR EntryStatusCode
+        VARCHAR ResultStatusCode
+    }
+    RaceRawFetchLink {
+        BIGINT RaceId PK
+        BIGINT RawFetchId PK
+    }
+    RaceEntryRawFetchLink {
+        BIGINT RaceEntryId PK
+        BIGINT RawFetchId PK
+    }
+    Race ||--o{ RaceEntry : "登録/出走"
+    RawContent ||--o{ RawFetch : "取得"
+    DataSource ||--o{ RawFetch : "取得元"
+    Race ||--o{ RaceRawFetchLink : "リネージ"
+    RawFetch ||--o{ RaceRawFetchLink : "リネージ"
+    RaceEntry ||--o{ RaceEntryRawFetchLink : "リネージ"
+    RawFetch ||--o{ RaceEntryRawFetchLink : "リネージ"

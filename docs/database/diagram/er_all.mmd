@@ -1,0 +1,193 @@
+%% ER図は主要項目のみの抜粋です。完全な定義は docs/tables を参照してください。
+erDiagram
+    DataSource {
+        INT DataSourceId PK
+    }
+    RacingCategory {
+        VARCHAR RacingCategoryCode PK
+    }
+    Organizer {
+        INT OrganizerId PK
+    }
+    Racecourse {
+        INT RacecourseId PK
+        VARCHAR RacingCategoryCode FK
+        INT OrganizerId FK
+    }
+    BetType {
+        VARCHAR BetTypeCode PK
+        VARCHAR SelectionTypeCode
+    }
+    Race {
+        BIGINT RaceId PK
+        INT RacecourseId FK
+        VARCHAR WeatherCode FK
+        VARCHAR TrackConditionCode FK
+        VARCHAR RaceClassCode FK
+        VARCHAR RaceGradeCode FK
+        VARCHAR AgeConditionCode FK
+        VARCHAR SexConditionCode FK
+        VARCHAR WeightConditionCode FK
+        DATE RaceDate
+    }
+    Horse {
+        BIGINT HorseId PK
+        BIGINT SireHorseId FK
+        BIGINT DamHorseId FK
+        NVARCHAR HorseName
+        SMALLINT BirthYear
+        VARCHAR SexCode
+    }
+    Jockey {
+        INT JockeyId PK
+    }
+    Trainer {
+        INT TrainerId PK
+    }
+    RaceEntry {
+        BIGINT RaceEntryId PK
+        BIGINT RaceId FK
+        BIGINT HorseId FK
+        INT JockeyId FK
+        INT TrainerId FK
+        TINYINT HorseNumber
+        TINYINT FrameNumber
+        TINYINT FinishPosition
+        VARCHAR EntryStatusCode
+        VARCHAR ResultStatusCode
+    }
+    RaceCorner {
+        BIGINT RaceCornerId PK
+        BIGINT RaceEntryId FK
+    }
+    RaceLap {
+        BIGINT RaceLapId PK
+        BIGINT RaceId FK
+    }
+    RaceOdds {
+        BIGINT RaceOddsId PK
+        BIGINT RaceId FK
+        VARCHAR BetTypeCode FK
+        INT DataSourceId FK
+        VARCHAR SelectionKey
+        DECIMAL OddsMin
+        DECIMAL OddsMax
+        BIT IsFinal
+        DATETIME2 RecordedAt
+    }
+    RaceOddsSelection {
+        BIGINT RaceOddsId PK
+        TINYINT SelectionOrder PK
+    }
+    RacePayout {
+        BIGINT RacePayoutId PK
+        BIGINT RaceId FK
+        VARCHAR BetTypeCode FK
+        INT DataSourceId FK
+        VARCHAR SelectionKey
+        INT PayoutAmount
+    }
+    RacePayoutSelection {
+        BIGINT RacePayoutId PK
+        TINYINT SelectionOrder PK
+    }
+    RacePrize {
+        BIGINT RacePrizeId PK
+        BIGINT RaceId FK
+        INT DataSourceId FK
+    }
+    RaceEntryMetric {
+        BIGINT RaceEntryMetricId PK
+        BIGINT RaceEntryId FK
+        VARCHAR MetricTypeCode FK
+        VARCHAR UnitCode FK
+        INT DataSourceId FK
+    }
+    RaceEntryEvaluation {
+        BIGINT RaceEntryEvaluationId PK
+        BIGINT RaceEntryId FK
+        VARCHAR EvaluationTypeCode FK
+        INT DataSourceId FK
+    }
+    RawContent {
+        BIGINT RawContentId PK
+        CHAR ContentHash
+        VARCHAR StorageTypeCode
+    }
+    RawFetch {
+        BIGINT RawFetchId PK
+        BIGINT RawContentId FK
+        INT DataSourceId FK
+        VARCHAR DataTypeCode FK
+        DATETIME2 RetrievedAt
+        NVARCHAR SourceUrl
+    }
+    RaceSourceMapping {
+        BIGINT RaceId PK
+        INT DataSourceId PK
+    }
+    HorseSourceMapping {
+        BIGINT HorseId PK
+        INT DataSourceId PK
+    }
+    JockeySourceMapping {
+        INT JockeyId PK
+        INT DataSourceId PK
+    }
+    TrainerSourceMapping {
+        INT TrainerId PK
+        INT DataSourceId PK
+    }
+    RacecourseSourceMapping {
+        INT RacecourseId PK
+        INT DataSourceId PK
+    }
+    RaceRawFetchLink {
+        BIGINT RaceId PK
+        BIGINT RawFetchId PK
+    }
+    RaceEntryRawFetchLink {
+        BIGINT RaceEntryId PK
+        BIGINT RawFetchId PK
+    }
+    RacingCategory ||--o{ Racecourse : "区分"
+    Organizer ||--o{ Racecourse : "主催"
+    Racecourse ||--o{ Race : "開催"
+    Race ||--o{ RaceEntry : "登録/出走"
+    Horse ||--o{ RaceEntry : "馬"
+    Jockey o|--o{ RaceEntry : "騎乗"
+    Trainer o|--o{ RaceEntry : "管理"
+    Horse o|--o{ Horse : "父"
+    Horse o|--o{ Horse : "母"
+    RaceEntry ||--o{ RaceCorner : "通過"
+    Race ||--o{ RaceLap : "ラップ"
+    Race ||--o{ RaceOdds : "オッズ"
+    BetType ||--o{ RaceOdds : "券種"
+    RaceOdds ||--|{ RaceOddsSelection : "選択"
+    Race ||--o{ RacePayout : "払戻"
+    BetType ||--o{ RacePayout : "券種"
+    RacePayout ||--|{ RacePayoutSelection : "選択"
+    Race ||--o{ RacePrize : "賞金"
+    RaceEntry ||--o{ RaceEntryMetric : "指数"
+    RaceEntry ||--o{ RaceEntryEvaluation : "評価"
+    RawContent ||--o{ RawFetch : "取得"
+    DataSource ||--o{ RawFetch : "取得元"
+    Race ||--o{ RaceRawFetchLink : "リネージ"
+    RawFetch ||--o{ RaceRawFetchLink : "リネージ"
+    RaceEntry ||--o{ RaceEntryRawFetchLink : "リネージ"
+    RawFetch ||--o{ RaceEntryRawFetchLink : "リネージ"
+    DataSource ||--o{ RaceOdds : "出所"
+    DataSource ||--o{ RacePayout : "出所"
+    DataSource ||--o{ RacePrize : "出所"
+    DataSource ||--o{ RaceEntryMetric : "出所"
+    DataSource ||--o{ RaceEntryEvaluation : "出所"
+    DataSource ||--o{ RaceSourceMapping : "対応"
+    Race ||--o{ RaceSourceMapping : "対応"
+    DataSource ||--o{ HorseSourceMapping : "対応"
+    Horse ||--o{ HorseSourceMapping : "対応"
+    DataSource ||--o{ JockeySourceMapping : "対応"
+    Jockey ||--o{ JockeySourceMapping : "対応"
+    DataSource ||--o{ TrainerSourceMapping : "対応"
+    Trainer ||--o{ TrainerSourceMapping : "対応"
+    DataSource ||--o{ RacecourseSourceMapping : "対応"
+    Racecourse ||--o{ RacecourseSourceMapping : "対応"

@@ -1,0 +1,76 @@
+%% ER図は主要項目のみの抜粋です。完全な定義は docs/tables を参照してください。
+erDiagram
+    RacingCategory {
+        VARCHAR RacingCategoryCode PK
+    }
+    Organizer {
+        INT OrganizerId PK
+    }
+    Racecourse {
+        INT RacecourseId PK
+        VARCHAR RacingCategoryCode FK
+        INT OrganizerId FK
+    }
+    Race {
+        BIGINT RaceId PK
+        INT RacecourseId FK
+        VARCHAR WeatherCode FK
+        VARCHAR TrackConditionCode FK
+        VARCHAR RaceClassCode FK
+        VARCHAR RaceGradeCode FK
+        VARCHAR AgeConditionCode FK
+        VARCHAR SexConditionCode FK
+        VARCHAR WeightConditionCode FK
+        DATE RaceDate
+    }
+    RaceEntry {
+        BIGINT RaceEntryId PK
+        BIGINT RaceId FK
+        BIGINT HorseId FK
+        INT JockeyId FK
+        INT TrainerId FK
+        TINYINT HorseNumber
+        TINYINT FrameNumber
+        TINYINT FinishPosition
+        VARCHAR EntryStatusCode
+        VARCHAR ResultStatusCode
+    }
+    RaceCorner {
+        BIGINT RaceCornerId PK
+        BIGINT RaceEntryId FK
+    }
+    RaceLap {
+        BIGINT RaceLapId PK
+        BIGINT RaceId FK
+    }
+    RacePrize {
+        BIGINT RacePrizeId PK
+        BIGINT RaceId FK
+        INT DataSourceId FK
+    }
+    Horse {
+        BIGINT HorseId PK
+        BIGINT SireHorseId FK
+        BIGINT DamHorseId FK
+        NVARCHAR HorseName
+        SMALLINT BirthYear
+        VARCHAR SexCode
+    }
+    Jockey {
+        INT JockeyId PK
+    }
+    Trainer {
+        INT TrainerId PK
+    }
+    RacingCategory ||--o{ Racecourse : "区分"
+    Organizer ||--o{ Racecourse : "主催"
+    Racecourse ||--o{ Race : "開催"
+    Race ||--o{ RaceEntry : "登録/出走"
+    Horse ||--o{ RaceEntry : "馬"
+    Jockey o|--o{ RaceEntry : "騎乗"
+    Trainer o|--o{ RaceEntry : "管理"
+    Horse o|--o{ Horse : "父"
+    Horse o|--o{ Horse : "母"
+    RaceEntry ||--o{ RaceCorner : "通過"
+    Race ||--o{ RaceLap : "ラップ"
+    Race ||--o{ RacePrize : "賞金"

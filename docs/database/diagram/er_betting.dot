@@ -1,0 +1,28 @@
+digraph G {
+graph [rankdir=LR, splines=ortho, nodesep=0.4, ranksep=0.8];
+node [shape=box, fontname="DejaVu Sans", fontsize=10];
+edge [fontname="DejaVu Sans", fontsize=8];
+"Race" [label="Race\nレース"];
+"RaceEntry" [label="RaceEntry\nレース出走馬"];
+"DataSource" [label="DataSource\nデータ取得元"];
+"BetType" [label="BetType\n馬券種別"];
+"RaceOdds" [label="RaceOdds\nオッズ"];
+"RaceOddsSelection" [label="RaceOddsSelection\nオッズ選択明細"];
+"RacePayout" [label="RacePayout\n払戻情報"];
+"RacePayoutSelection" [label="RacePayoutSelection\n払戻選択明細"];
+"RaceEntryMetric" [label="RaceEntryMetric\n出走馬指数"];
+"RaceEntryEvaluation" [label="RaceEntryEvaluation\n出走馬評価"];
+"Race" -> "RaceEntry" [label="登録/出走"];
+"Race" -> "RaceOdds" [label="オッズ"];
+"BetType" -> "RaceOdds" [label="券種"];
+"RaceOdds" -> "RaceOddsSelection" [label="選択"];
+"Race" -> "RacePayout" [label="払戻"];
+"BetType" -> "RacePayout" [label="券種"];
+"RacePayout" -> "RacePayoutSelection" [label="選択"];
+"RaceEntry" -> "RaceEntryMetric" [label="指数"];
+"RaceEntry" -> "RaceEntryEvaluation" [label="評価"];
+"DataSource" -> "RaceOdds" [label="出所"];
+"DataSource" -> "RacePayout" [label="出所"];
+"DataSource" -> "RaceEntryMetric" [label="出所"];
+"DataSource" -> "RaceEntryEvaluation" [label="出所"];
+}

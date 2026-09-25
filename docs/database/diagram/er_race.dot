@@ -1,0 +1,28 @@
+digraph G {
+graph [rankdir=LR, splines=ortho, nodesep=0.4, ranksep=0.8];
+node [shape=box, fontname="DejaVu Sans", fontsize=10];
+edge [fontname="DejaVu Sans", fontsize=8];
+"RacingCategory" [label="RacingCategory\n競馬区分"];
+"Organizer" [label="Organizer\n主催者"];
+"Racecourse" [label="Racecourse\n競馬場"];
+"Race" [label="Race\nレース"];
+"RaceEntry" [label="RaceEntry\nレース出走馬"];
+"RaceCorner" [label="RaceCorner\nコーナー通過順位"];
+"RaceLap" [label="RaceLap\nレースラップ"];
+"RacePrize" [label="RacePrize\nレース賞金"];
+"Horse" [label="Horse\n馬"];
+"Jockey" [label="Jockey\n騎手"];
+"Trainer" [label="Trainer\n調教師"];
+"RacingCategory" -> "Racecourse" [label="区分"];
+"Organizer" -> "Racecourse" [label="主催"];
+"Racecourse" -> "Race" [label="開催"];
+"Race" -> "RaceEntry" [label="登録/出走"];
+"Horse" -> "RaceEntry" [label="馬"];
+"Jockey" -> "RaceEntry" [label="騎乗"];
+"Trainer" -> "RaceEntry" [label="管理"];
+"Horse" -> "Horse" [label="父"];
+"Horse" -> "Horse" [label="母"];
+"RaceEntry" -> "RaceCorner" [label="通過"];
+"Race" -> "RaceLap" [label="ラップ"];
+"Race" -> "RacePrize" [label="賞金"];
+}

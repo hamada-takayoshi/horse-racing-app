@@ -1,0 +1,34 @@
+digraph G {
+graph [rankdir=LR, splines=ortho, nodesep=0.4, ranksep=0.8];
+node [shape=box, fontname="DejaVu Sans", fontsize=10];
+edge [fontname="DejaVu Sans", fontsize=8];
+"Horse" [label="Horse\n馬"];
+"Jockey" [label="Jockey\n騎手"];
+"Trainer" [label="Trainer\n調教師"];
+"DataSource" [label="DataSource\nデータ取得元"];
+"Race" [label="Race\nレース"];
+"RaceEntry" [label="RaceEntry\nレース出走馬"];
+"RaceSourceMapping" [label="RaceSourceMapping\nRace外部ID対応"];
+"HorseSourceMapping" [label="HorseSourceMapping\nHorse外部ID対応"];
+"JockeySourceMapping" [label="JockeySourceMapping\nJockey外部ID対応"];
+"TrainerSourceMapping" [label="TrainerSourceMapping\nTrainer外部ID対応"];
+"RacecourseSourceMapping" [label="RacecourseSourceMapping\nRacecourse外部ID対応"];
+"Racecourse" [label="Racecourse\n競馬場"];
+"Racecourse" -> "Race" [label="開催"];
+"Race" -> "RaceEntry" [label="登録/出走"];
+"Horse" -> "RaceEntry" [label="馬"];
+"Jockey" -> "RaceEntry" [label="騎乗"];
+"Trainer" -> "RaceEntry" [label="管理"];
+"Horse" -> "Horse" [label="父"];
+"Horse" -> "Horse" [label="母"];
+"DataSource" -> "RaceSourceMapping" [label="対応"];
+"Race" -> "RaceSourceMapping" [label="対応"];
+"DataSource" -> "HorseSourceMapping" [label="対応"];
+"Horse" -> "HorseSourceMapping" [label="対応"];
+"DataSource" -> "JockeySourceMapping" [label="対応"];
+"Jockey" -> "JockeySourceMapping" [label="対応"];
+"DataSource" -> "TrainerSourceMapping" [label="対応"];
+"Trainer" -> "TrainerSourceMapping" [label="対応"];
+"DataSource" -> "RacecourseSourceMapping" [label="対応"];
+"Racecourse" -> "RacecourseSourceMapping" [label="対応"];
+}

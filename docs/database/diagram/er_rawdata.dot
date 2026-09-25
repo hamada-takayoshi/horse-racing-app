@@ -1,0 +1,19 @@
+digraph G {
+graph [rankdir=LR, splines=ortho, nodesep=0.4, ranksep=0.8];
+node [shape=box, fontname="DejaVu Sans", fontsize=10];
+edge [fontname="DejaVu Sans", fontsize=8];
+"RawContent" [label="RawContent\n取得原本内容"];
+"RawFetch" [label="RawFetch\n取得イベント"];
+"DataSource" [label="DataSource\nデータ取得元"];
+"Race" [label="Race\nレース"];
+"RaceEntry" [label="RaceEntry\nレース出走馬"];
+"RaceRawFetchLink" [label="RaceRawFetchLink\nレース取得リネージ"];
+"RaceEntryRawFetchLink" [label="RaceEntryRawFetchLink\n出走馬取得リネージ"];
+"Race" -> "RaceEntry" [label="登録/出走"];
+"RawContent" -> "RawFetch" [label="取得"];
+"DataSource" -> "RawFetch" [label="取得元"];
+"Race" -> "RaceRawFetchLink" [label="リネージ"];
+"RawFetch" -> "RaceRawFetchLink" [label="リネージ"];
+"RaceEntry" -> "RaceEntryRawFetchLink" [label="リネージ"];
+"RawFetch" -> "RaceEntryRawFetchLink" [label="リネージ"];
+}

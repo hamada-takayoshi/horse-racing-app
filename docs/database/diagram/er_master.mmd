@@ -1,0 +1,85 @@
+%% ER図は主要項目のみの抜粋です。完全な定義は docs/tables を参照してください。
+erDiagram
+    Horse {
+        BIGINT HorseId PK
+        BIGINT SireHorseId FK
+        BIGINT DamHorseId FK
+        NVARCHAR HorseName
+        SMALLINT BirthYear
+        VARCHAR SexCode
+    }
+    Jockey {
+        INT JockeyId PK
+    }
+    Trainer {
+        INT TrainerId PK
+    }
+    DataSource {
+        INT DataSourceId PK
+    }
+    Race {
+        BIGINT RaceId PK
+        INT RacecourseId FK
+        VARCHAR WeatherCode FK
+        VARCHAR TrackConditionCode FK
+        VARCHAR RaceClassCode FK
+        VARCHAR RaceGradeCode FK
+        VARCHAR AgeConditionCode FK
+        VARCHAR SexConditionCode FK
+        VARCHAR WeightConditionCode FK
+        DATE RaceDate
+    }
+    RaceEntry {
+        BIGINT RaceEntryId PK
+        BIGINT RaceId FK
+        BIGINT HorseId FK
+        INT JockeyId FK
+        INT TrainerId FK
+        TINYINT HorseNumber
+        TINYINT FrameNumber
+        TINYINT FinishPosition
+        VARCHAR EntryStatusCode
+        VARCHAR ResultStatusCode
+    }
+    RaceSourceMapping {
+        BIGINT RaceId PK
+        INT DataSourceId PK
+    }
+    HorseSourceMapping {
+        BIGINT HorseId PK
+        INT DataSourceId PK
+    }
+    JockeySourceMapping {
+        INT JockeyId PK
+        INT DataSourceId PK
+    }
+    TrainerSourceMapping {
+        INT TrainerId PK
+        INT DataSourceId PK
+    }
+    RacecourseSourceMapping {
+        INT RacecourseId PK
+        INT DataSourceId PK
+    }
+    Racecourse {
+        INT RacecourseId PK
+        VARCHAR RacingCategoryCode FK
+        INT OrganizerId FK
+    }
+    Racecourse ||--o{ Race : "開催"
+    Race ||--o{ RaceEntry : "登録/出走"
+    Horse ||--o{ RaceEntry : "馬"
+    Jockey o|--o{ RaceEntry : "騎乗"
+    Trainer o|--o{ RaceEntry : "管理"
+    Horse o|--o{ Horse : "父"
+    Horse o|--o{ Horse : "母"
+    DataSource ||--o{ RaceSourceMapping : "対応"
+    Race ||--o{ RaceSourceMapping : "対応"
+    DataSource ||--o{ HorseSourceMapping : "対応"
+    Horse ||--o{ HorseSourceMapping : "対応"
+    DataSource ||--o{ JockeySourceMapping : "対応"
+    Jockey ||--o{ JockeySourceMapping : "対応"
+    DataSource ||--o{ TrainerSourceMapping : "対応"
+    Trainer ||--o{ TrainerSourceMapping : "対応"
+    DataSource ||--o{ RacecourseSourceMapping : "対応"
+    Racecourse ||--o{ RacecourseSourceMapping : "対応"
