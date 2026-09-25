@@ -1,47 +1,162 @@
 # horse-racing-app
 
-競馬の過去レースデータを収集・保存・分析し、将来的にはレース予想にも利用するためのアプリケーションです。
+競馬の過去レースデータを収集・保存・分析し、将来的には現時点の情報を使ったレース予想にも利用するためのアプリケーションです。
 
 ## 現在の開発方針
 
-- まずローカルPCで動作する開発環境を構築する
+- まずローカルPCで動作する環境を構築する
 - DBは SQL Server を使用する
 - SQL Server はWindowsへ直接インストールせず、Dockerコンテナで実行する
+- SQL Serverコンテナは Developer Edition を使用する
 - DBデータはDocker named volumeに永続化する
-- アプリケーションからは専用DBユーザーで接続し、saは管理・初期化用途のみに使用する
+- アプリケーションは専用DBユーザーで接続し、saは管理・初期化用途のみに使用する
 - 将来的なAzure移行を考慮し、Azure SQL Databaseとの互換性を意識する
 - DB設計の正本はMarkdownのテーブル定義とMermaidのER図とする
 - Gitのcommitメッセージは日本語で記載する
+
+## 現在の構成
+
+```text
+horse-racing-app/
+├─ database/
+│  ├─ ddl/
+│  │  ├─ 001_create_database.sql
+│  │  ├─ 005_create_app_user.sql
+│  │  └─ 010_schema_placeholder.sql
+│  ├─ seed/
+│  │  └─ 100_seed_master_data.sql
+│  └─ scripts/
+│     ├─ start-db.ps1
+│     ├─ stop-db.ps1
+│     ├─ initialize-db.ps1
+│     ├─ verify-db.ps1
+│     └─ reset-db.ps1
+├─ docker/
+│  └─ compose.yml
+├─ .env.example
+├─ .gitignore
+└─ README.md
+```
+
+`src/`、`tests/`、`docs/` はアプリケーション方式とDB DDLを確定しながら追加します。
 
 ## ローカル開発環境
 
 ### 必要なもの
 
 - Git
-- Docker Desktop（WSL2 backend）
-- PowerShell 7推奨
-- .NET SDK（アプリケーション方式決定後にバージョンを固定）
+- Docker Desktop
+- WSL2
+- PowerShell 7 推奨
 
 SQL Server本体をWindowsへ直接インストールする必要はありません。
 
-## Repository構成
+## 初回セットアップ
+
+Repositoryをcloneします。
+
+```powershell
+git clone https://github.com/hamada-takayoshi/horse-racing-app.git
+cd horse-racing-app
+```
+
+環境変数ファイルを作成します。
+
+```powershell
+Copy-Item .env.example .env
+```
+
+`.env` を編集し、少なくとも以下のパスワードを強い値へ変更してください。
 
 ```text
-horse-racing-app/
-├─ database/
-│  ├─ ddl/                 # テーブル・制約・Index・View等のDDL
-│  ├─ seed/                # コードマスタ等の初期データ
-│  └─ scripts/             # DB起動・初期化・検証スクリプト
-├─ docker/
-│  └─ compose.yml          # SQL Serverローカル環境
-├─ docs/                   # 設計資料
-├─ src/                    # アプリケーション本体
-├─ tests/                  # 自動テスト
-├─ .env.example            # ローカル環境変数テンプレート
-├─ .gitignore
-└─ README.md
+MSSQL_SA_PASSWORD=...
+MSSQL_APP_PASSWORD=...
 ```
+
+`.env` はGit管理対象外です。
+
+## SQL Server起動
+
+```powershell
+./database/scripts/start-db.ps1
+```
+
+Dockerコンテナ `horse-racing-sqlserver` が起動し、SQL Serverのデータはnamed volume `horse-racing-sql-data` に保存されます。
+
+## DB初期化
+
+```powershell
+./database/scripts/initialize-db.ps1
+```
+
+現在の初期化処理は以下を実行します。
+
+1. SQL Serverコンテナを起動
+2. SQL Serverの起動完了を待機
+3. `HorseRacing` DBを作成
+4. アプリ用ログイン・DBユーザーを作成
+5. スキーマDDLを実行
+6. コードマスタ初期データを投入
+
+現時点では、競馬DB v3.1 の実テーブルDDLとコードマスタ投入内容はプレースホルダーです。次の段階で設計資料から正式なDDLを作成します。
+
+## DB接続確認
+
+```powershell
+./database/scripts/verify-db.ps1
+```
+
+アプリ用ユーザーで `HorseRacing` DBへ接続できることを確認します。
+
+## SQL Server停止
+
+```powershell
+./database/scripts/stop-db.ps1
+```
+
+コンテナを停止してもDBデータは削除されません。
+
+## DB完全リセット
+
+```powershell
+./database/scripts/reset-db.ps1
+```
+
+この処理はコンテナとDBデータVolumeを削除します。誤実行防止のため、実行時に `RESET` の入力を要求します。
+
+## 環境変数
+
+| 変数 | 用途 |
+|---|---|
+| `MSSQL_SA_PASSWORD` | SQL Server管理者パスワード |
+| `MSSQL_APP_PASSWORD` | アプリ用DBユーザーパスワード |
+| `MSSQL_PORT` | ホスト側公開ポート。既定値1433 |
+| `MSSQL_DATABASE` | DB名。既定値HorseRacing |
+| `MSSQL_APP_LOGIN` | アプリ用ログイン名 |
+
+## Git運用
+
+commitメッセージは日本語で記載します。
+
+例：
+
+```text
+SQL Server開発環境を追加
+DB初期化スクリプトを追加
+競馬DBテーブルDDLを追加
+```
+
+秘密情報を含む `.env` はcommitしません。
 
 ## 次の作業
 
-Docker + SQL Server のローカル開発環境、DB初期化スクリプト、設計DDLを順次追加します。
+次の段階では、競馬DB設計 v3.1 を元に以下を追加します。
+
+1. 正式なテーブルDDL
+2. PK / FK / CHECK / UNIQUE制約
+3. Index
+4. View
+5. コードマスタ初期データ
+6. DB自動検証
+7. アプリケーションプロジェクト
+8. 自動テスト
