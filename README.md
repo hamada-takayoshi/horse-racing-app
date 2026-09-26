@@ -12,7 +12,8 @@
 - アプリケーションは専用DBユーザーで接続し、saは管理・初期化用途のみに使用する
 - 将来的なAzure移行を考慮し、Azure SQL Databaseとの互換性を意識する
 - DB設計の正本はMarkdownのテーブル定義とMermaidのER図とする
-- アプリケーションはASP.NET Core + Blazor Web App（Interactive Server）を採用し、アプリ側のロジックはC#で実装する
+- アプリケーションは.NET 10 LTS / ASP.NET Core 10 + Blazor Web App（Interactive Server）を採用し、アプリ側のロジックはC#で実装する
+- DBアクセスはDapper + Microsoft.Data.SqlClientを使用し、DBスキーマは既存のDDLで管理する
 - 当面はローカルPC上で実行し、同じPCのブラウザーから利用する。アプリとDBを外部ネットワークへ公開しない
 - 将来のスマートフォン利用に備えて画面をレスポンシブに設計する。LAN経由の利用は認証などを整備してから対応する
 - アプリケーションの方式・構成の詳細は `docs/application/00_architecture.md` を参照する

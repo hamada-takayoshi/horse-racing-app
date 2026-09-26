@@ -8,7 +8,7 @@ Repository: https://github.com/hamada-takayoshi/horse-racing-app.git
 
 過去10年程度の国内競馬データを収集・保存・分析し、将来的には出走前情報を利用したレース予想へ拡張するためのアプリケーションを構築する。
 
-現在は、ローカル開発用のSQL Server環境と競馬DB v3.1の物理スキーマまで完成している。アプリケーション本体は未着手だが、方式はASP.NET Core + Blazor Web App（Interactive Server）に決定した。次の工程はアプリケーションプロジェクトとローカル起動環境の作成である。方式の詳細は`docs/application/00_architecture.md`を参照する。
+現在は、ローカル開発用のSQL Server環境と競馬DB v3.1の物理スキーマまで完成している。アプリケーション本体は未着手だが、方式は.NET 10 LTS / ASP.NET Core 10 + Blazor Web App（Interactive Server）、DBアクセスはDapper + Microsoft.Data.SqlClientに決定した。次の工程は.NET 10 SDKの導入とアプリケーションプロジェクトの作成である。方式の詳細は`docs/application/00_architecture.md`を参照する。
 
 ## 2. 現在のGit状態
 
