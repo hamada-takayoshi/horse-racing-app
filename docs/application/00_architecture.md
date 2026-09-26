@@ -68,11 +68,68 @@
 - アプリケーションのDB接続には既存のアプリ専用ユーザーを使い、必要最小限の権限を付与する。
 - DBスキーマ定義・初期化は既存の`database/`配下のSQLとスクリプトを正本とし、アプリの都合だけで設計資料と異なるスキーマを作らない。
 
-## 5. 実装前に必要な準備・残課題
+## 5. 初期クラス設計
+
+最初のレース・馬・出走馬の登録と検索を対象とする。Blazorホストは1つのWebプロジェクトに置き、テストプロジェクトを分ける。機能や重複が実際に増えた場合に限り、追加のプロジェクトや抽象化を検討する。
+
+### 5.1 依存方向
+
+```mermaid
+flowchart TD
+	UI[Blazor Components] --> APP[Application Services]
+	APP --> CONTRACTS[Repository Interfaces]
+	DATA[Dapper Repositories] --> CONTRACTS
+	DATA --> DB[(SQL Server)]
+	APP --> DTO[Use-case Request / Result Types]
+	UI --> DTO
+```
+
+- Blazorコンポーネントはアプリケーションサービスだけを呼び出す。
+- アプリケーションサービスはユースケース、入力検証、複数リポジトリをまたぐ処理を担当する。
+- リポジトリのインターフェースはApplication側、SQL ServerとDapperを使う実装はData側に置く。
+- Data側だけがSQLとDapperに依存する。SQLはパラメーター化し、接続は処理ごとに開放する。
+
+### 5.2 最初に作るクラス
+
+| クラス | 責務 |
+|---|---|
+| `RaceService` | レースの検索・詳細取得・登録更新を調整する。 |
+| `HorseService` | 馬の検索・詳細取得・登録更新を調整する。 |
+| `RaceEntryService` | レースへの出走馬登録・更新・一覧取得を調整する。出走前状態と結果状態を別々に扱う。 |
+| `IRaceRepository` / `RaceRepository` | レース用の取得・保存処理の契約とDapper実装。 |
+| `IHorseRepository` / `HorseRepository` | 馬用の取得・保存処理の契約とDapper実装。 |
+| `IRaceEntryRepository` / `RaceEntryRepository` | 出走馬用の取得・保存処理の契約とDapper実装。 |
+| `SqlConnectionFactory` | 設定からSQL Server接続を作成する。接続文字列をクラスへ直書きしない。 |
+
+画面から渡す検索条件・入力と、一覧・詳細の結果は用途別の型にする。初期候補は`RaceSearchCriteria`、`RaceListItem`、`RaceDetails`、`SaveRaceRequest`、`HorseSearchCriteria`、`HorseListItem`、`SaveHorseRequest`、`RaceEntryListItem`、`SaveRaceEntryRequest`。必要な機能を実装する段階で必要な型だけを追加し、DBテーブルの全カラムを持つ型を一律に作らない。
+
+### 5.3 プロジェクト配置案
+
+```text
+src/HorseRacing.App/
+├─ Components/Pages/           # Blazor画面
+├─ Application/
+│  ├─ Races/                   # RaceService、検索・入力・結果型、IRaceRepository
+│  ├─ Horses/                  # HorseService、検索・入力・結果型、IHorseRepository
+│  └─ RaceEntries/             # RaceEntryService、入出力型、IRaceEntryRepository
+└─ Data/
+   ├─ SqlConnectionFactory.cs
+   ├─ Races/RaceRepository.cs
+   ├─ Horses/HorseRepository.cs
+   └─ RaceEntries/RaceEntryRepository.cs
+
+tests/HorseRacing.Tests/
+├─ Application/                # リポジトリを差し替えたサービス単体テスト
+└─ Data/                       # ローカルSQL Serverを使う必要な統合テスト
+```
+
+汎用Repository、汎用CRUD基底クラス、独立したDomainプロジェクトは初期段階では作らない。検索条件や画面入力型とDBテーブルの形が異なるため、Dapperの問い合わせ結果は用途別の結果型へ投影する。業務上の不変条件が複雑になった時点で、必要なDomain型を追加する。
+
+## 6. 実装前に必要な準備・残課題
 
 ### 準備
 
-- .NET 10 SDKをインストールする。この開発環境で確認できたSDKは8.0.418と9.0.304で、10.0 SDKは未導入。
+- 開発環境に.NET 10 SDK 10.0.401をユーザー領域へ導入済み。PowerShellユーザープロファイルで.NET 10を優先するPATH設定を確認済み。
 - アプリ用DBユーザーの接続情報を開発用User Secretsに設定する。実際のパスワードはソースや設計資料に記録しない。
 
 ### 実装時に決定
@@ -81,11 +138,11 @@
 - 初期機能ごとのDB権限と、統合テストの実行手順
 - 配布方法。まずは開発者がローカルで起動する形とし、常駐化やインストーラーは必要性が出てから判断する。
 
-## 6. 参考資料
+## 7. 参考資料
 
 - [.NET and .NET Core Support Policy](https://dotnet.microsoft.com/en-us/platform/support/policy/dotnet-core)（2026-09-27確認）
 
-## 7. 関連資料
+## 8. 関連資料
 
 - [プロジェクト概要](../../README.md)
 - [データベース設計資料](../database/README.md)
