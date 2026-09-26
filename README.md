@@ -23,6 +23,7 @@
 
 ```text
 horse-racing-app/
+├─ AGENTS.md
 ├─ database/
 │  ├─ ddl/
 │  │  ├─ 001_create_database.sql
