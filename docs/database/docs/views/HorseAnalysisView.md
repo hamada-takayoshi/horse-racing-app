@@ -3,13 +3,13 @@
 母父を物理列として保持せず、母馬の父から導出する分析用ビュー。
 
 ```sql
-CREATE VIEW dbo.HorseAnalysisView AS
+CREATE OR ALTER VIEW dbo.HorseAnalysisView AS
 SELECT
     h.HorseId,
     h.HorseName,
     h.BirthDate,
     h.BirthYear,
-    h.Sex,
+    h.SexCode,
     h.CountryCode,
     h.SireHorseId,
     sire.HorseName AS SireHorseName,

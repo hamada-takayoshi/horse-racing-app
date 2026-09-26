@@ -27,7 +27,24 @@
 - 旧 `Horse.Sex NCHAR(1)` / `RaceEntry.HorseSex NCHAR(1)`: 0件
 - Markdown主要見出し欠落: 0件
 - FinalRaceOddsView の旧RaceOdds.SelectionTypeCode参照: 0件
+- HorseAnalysisView の旧Horse.Sex参照: 0件
 
-## 3. 結論
+## 3. SQL Server適用試験結果
 
-上記検証項目について不整合を検出していない。なお、本検証は設計資料内の静的整合性を対象とし、実DBへのDDL適用試験や実データ取込試験は含まない。
+SQL Server 2025 DeveloperコンテナへDDLを適用し、以下を確認した。
+
+- テーブル: 39件
+- View: 2件
+- 主キー: 39件
+- 一意制約: 19件
+- 外部キー: 52件
+- CHECK制約: 14件
+- 設計資料で定義されたIndex: 9件
+- RacingCategory初期値: 2件
+- BetType初期値: 9件
+- 初期化処理の再実行: 成功
+- アプリ用ユーザーでの接続・スキーマ参照・書込み後ロールバック: 成功
+
+## 4. 結論
+
+上記検証項目について不整合を検出していない。実データ取込試験はアプリケーション実装後に行う。

@@ -1,10 +1,10 @@
-CREATE VIEW dbo.HorseAnalysisView AS
+CREATE OR ALTER VIEW dbo.HorseAnalysisView AS
 SELECT
     h.HorseId,
     h.HorseName,
     h.BirthDate,
     h.BirthYear,
-    h.Sex,
+    h.SexCode,
     h.CountryCode,
     h.SireHorseId,
     sire.HorseName AS SireHorseName,

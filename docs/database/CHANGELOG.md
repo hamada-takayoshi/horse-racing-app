@@ -1,5 +1,13 @@
 # 変更履歴
 
+## リポジトリ実装
+
+- v3.1設計をSQL Server 2025用の39テーブル、制約、Index、Viewとして実装。
+- 競馬区分2件と馬券種別9件の初期データを追加。
+- DDL、Index、View、初期データ投入を再実行可能にした。
+- `HorseAnalysisView` の旧カラム参照 `Sex` を `SexCode` に修正。
+- SQL Server物理実装方針とDB自動検証を追加。
+
 ## v3.1
 
 - `BetType.SelectionTypeCode` を正式定義し、RaceOdds / RacePayout から同列を削除。

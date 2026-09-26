@@ -54,7 +54,11 @@ function Invoke-SqlFile {
 
 Invoke-SqlFile (Join-Path $repoRoot "database/ddl/001_create_database.sql")
 Invoke-SqlFile (Join-Path $repoRoot "database/ddl/005_create_app_user.sql")
-Invoke-SqlFile (Join-Path $repoRoot "database/ddl/010_schema_placeholder.sql")
+Invoke-SqlFile (Join-Path $repoRoot "database/ddl/010_create_tables.sql")
+Invoke-SqlFile (Join-Path $repoRoot "database/ddl/020_create_constraints.sql")
+Invoke-SqlFile (Join-Path $repoRoot "database/ddl/030_create_indexes.sql")
+Invoke-SqlFile (Join-Path $repoRoot "database/ddl/040_create_views.sql")
 Invoke-SqlFile (Join-Path $repoRoot "database/seed/100_seed_master_data.sql")
+Invoke-SqlFile (Join-Path $repoRoot "database/ddl/900_verify_schema.sql")
 
 Write-Host "DB初期化が完了しました。"

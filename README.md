@@ -22,7 +22,11 @@ horse-racing-app/
 │  ├─ ddl/
 │  │  ├─ 001_create_database.sql
 │  │  ├─ 005_create_app_user.sql
-│  │  └─ 010_schema_placeholder.sql
+│  │  ├─ 010_create_tables.sql
+│  │  ├─ 020_create_constraints.sql
+│  │  ├─ 030_create_indexes.sql
+│  │  ├─ 040_create_views.sql
+│  │  └─ 900_verify_schema.sql
 │  ├─ seed/
 │  │  └─ 100_seed_master_data.sql
 │  └─ scripts/
@@ -31,6 +35,13 @@ horse-racing-app/
 │     ├─ initialize-db.ps1
 │     ├─ verify-db.ps1
 │     └─ reset-db.ps1
+├─ docs/
+│  └─ database/
+│     ├─ README.md
+│     ├─ CHANGELOG.md
+│     ├─ docs/
+│     ├─ diagram/
+│     └─ image/
 ├─ docker/
 │  └─ compose.yml
 ├─ .env.example
@@ -38,7 +49,7 @@ horse-racing-app/
 └─ README.md
 ```
 
-`src/`、`tests/`、`docs/` はアプリケーション方式とDB DDLを確定しながら追加します。
+`src/`、`tests/` はアプリケーション方式を確定しながら追加します。
 
 ## ローカル開発環境
 
@@ -97,8 +108,9 @@ Dockerコンテナ `horse-racing-sqlserver` が起動し、SQL Serverのデー�
 4. アプリ用ログイン・DBユーザーを作成
 5. スキーマDDLを実行
 6. コードマスタ初期データを投入
+7. 39テーブル、制約、Index、View、初期データを検証
 
-現時点では、競馬DB v3.1 の実テーブルDDLとコードマスタ投入内容はプレースホルダーです。次の段階で設計資料から正式なDDLを作成します。
+初期データとして、競馬区分2件と馬券種別9件を投入します。設計資料に具体値がないコードマスタは空の状態で作成します。
 
 ## DB接続確認
 
@@ -106,7 +118,7 @@ Dockerコンテナ `horse-racing-sqlserver` が起動し、SQL Serverのデー�
 ./database/scripts/verify-db.ps1
 ```
 
-アプリ用ユーザーで `HorseRacing` DBへ接続できることを確認します。
+アプリ用ユーザーで `HorseRacing` DBへ接続し、スキーマと初期データを確認します。
 
 ## SQL Server停止
 
@@ -150,13 +162,9 @@ DB初期化スクリプトを追加
 
 ## 次の作業
 
-次の段階では、競馬DB設計 v3.1 を元に以下を追加します。
+次の段階では、アプリケーション本体を追加します。
 
-1. 正式なテーブルDDL
-2. PK / FK / CHECK / UNIQUE制約
-3. Index
-4. View
-5. コードマスタ初期データ
-6. DB自動検証
-7. アプリケーションプロジェクト
-8. 自動テスト
+1. アプリケーション方式・技術構成の決定
+2. アプリケーションプロジェクト
+3. レース・出走馬の登録と検索
+4. 自動テスト

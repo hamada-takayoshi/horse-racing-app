@@ -54,7 +54,7 @@ PNG / DOT / `image/design_package_overview.png` は閲覧用の派生資料で�
 ## 4. 資料構成
 
 ```text
-horse_racing_db_design_v3_1/
+docs/database/
 ├─ README.md
 ├─ CHANGELOG.md
 ├─ docs/
