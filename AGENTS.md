@@ -2,6 +2,10 @@
 
 ## 開発ルール
 
+### コマンド実行
+
+- コマンドの事前確認、`git status`の扱い、破壊的操作の許可条件は`docs/development/command_execution_policy.md`に従う。
+
 ### 資料の正本
 
 - プロジェクト概要とセットアップ手順は`README.md`を参照する。
