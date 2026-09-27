@@ -145,4 +145,6 @@ tests/HorseRacing.Tests/
 ## 8. 関連資料
 
 - [プロジェクト概要](../../README.md)
+- [データ収集アプリケーション設計案](02_collection_application.md)
+- [アプリケーション実装状況](01_implementation_status.md)
 - [データベース設計資料](../database/README.md)

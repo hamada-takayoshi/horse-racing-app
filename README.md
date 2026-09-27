@@ -13,6 +13,7 @@
 - 将来的なAzure移行を考慮し、Azure SQL Databaseとの互換性を意識する
 - DB設計の正本はMarkdownのテーブル定義とMermaidのER図とする
 - アプリケーションは.NET 10 LTS / ASP.NET Core 10 + Blazor Web App（Interactive Server）を採用し、アプリ側のロジックはC#で実装する
+- 収集処理は分析画面から分離し、設計案は `docs/application/02_collection_application.md` を参照する
 - DBアクセスはDapper + Microsoft.Data.SqlClientを使用し、DBスキーマは既存のDDLで管理する
 - 当面はローカルPC上で実行し、同じPCのブラウザーから利用する。アプリとDBを外部ネットワークへ公開しない
 - 将来のスマートフォン利用に備えて画面をレスポンシブに設計する。LAN経由の利用は認証などを整備してから対応する
@@ -46,7 +47,8 @@ horse-racing-app/
 ├─ docs/
 │  ├─ application/
 │  │  ├─ 00_architecture.md
-│  │  └─ 01_implementation_status.md
+│  │  ├─ 01_implementation_status.md
+│  │  └─ 02_collection_application.md
 │  ├─ development/
 │  │  └─ command_execution_policy.md
 │  └─ database/
