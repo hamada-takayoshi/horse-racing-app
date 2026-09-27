@@ -1,0 +1,29 @@
+﻿@inherits LayoutComponentBase
+
+<div class="app-shell">
+    <header class="app-header">
+        <div class="brand-mark" aria-hidden="true">競</div>
+        <div class="brand-copy">
+            <span class="brand-kicker">RACING DATA</span>
+            <span class="brand-title">競馬データベース</span>
+        </div>
+        <div class="local-status"><span aria-hidden="true"></span>ローカル環境</div>
+    </header>
+
+    <aside class="sidebar">
+        <NavMenu />
+        <div class="sidebar-note">SQL Server<br />ローカル接続</div>
+    </aside>
+
+    <main class="main-content">
+        <article class="content-shell">
+            @Body
+        </article>
+    </main>
+</div>
+
+<div id="blazor-error-ui" data-nosnippet>
+    画面の処理中にエラーが発生しました。
+    <a href="." class="reload">再読み込み</a>
+    <span class="dismiss">🗙</span>
+</div>

@@ -1,0 +1,141 @@
+@page "/"
+@page "/races"
+@rendermode InteractiveServer
+@inject RaceService RaceService
+@inject ILogger<Races> Logger
+
+<PageTitle>レース検索 | 競馬データ</PageTitle>
+
+<section class="race-page" aria-labelledby="page-title">
+    <header class="page-heading">
+        <p class="eyebrow">RACE DATABASE</p>
+        <div class="heading-row">
+            <h1 id="page-title">レース検索</h1>
+            <p>開催日で過去のレースを絞り込みます。</p>
+        </div>
+    </header>
+
+    <section class="search-toolbar" aria-label="検索条件">
+        <label class="date-filter">
+            <span>開催日・開始</span>
+            <InputDate @bind-Value="_fromDate" class="date-input" />
+        </label>
+        <span class="date-separator" aria-hidden="true">から</span>
+        <label class="date-filter">
+            <span>開催日・終了</span>
+            <InputDate @bind-Value="_toDate" class="date-input" />
+        </label>
+        <div class="toolbar-actions">
+            <button class="search-button" type="button" disabled="_isLoading" @onclick="SearchAsync">
+                @(_isLoading ? "検索中..." : "検索")
+            </button>
+            <button class="clear-button" type="button" disabled="_isLoading" @onclick="ClearFiltersAsync">
+                条件クリア
+            </button>
+        </div>
+    </section>
+
+    <section class="results-section" aria-labelledby="results-title" aria-live="polite">
+        <header class="results-heading">
+            <h2 id="results-title">検索結果</h2>
+            @if (!_isLoading && _errorMessage is null)
+            {
+                <span class="result-count">@_races.Count 件 <span>最大100件</span></span>
+            }
+        </header>
+
+        @if (_errorMessage is not null)
+        {
+            <div class="message message-error" role="alert">@_errorMessage</div>
+        }
+        else if (_isLoading)
+        {
+            <p class="message" role="status">レースを検索しています。</p>
+        }
+        else if (_races.Count == 0)
+        {
+            <div class="empty-state">
+                <p class="empty-title">条件に一致するレースはありません</p>
+                <p>開催日の条件を変更して、もう一度検索してください。</p>
+            </div>
+        }
+        else
+        {
+            <div class="table-scroll">
+                <table class="race-table">
+                    <thead>
+                        <tr>
+                            <th scope="col">開催日</th>
+                            <th scope="col">競馬場</th>
+                            <th scope="col">レース</th>
+                            <th scope="col">馬場</th>
+                            <th scope="col">距離</th>
+                            <th scope="col">出走頭数</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var race in _races)
+                        {
+                            <tr @key="race.RaceId">
+                                <td>@race.RaceDate.ToString("yyyy/MM/dd")</td>
+                                <td>@race.RacecourseName</td>
+                                <td><span class="race-number">@race.RaceNumber R</span> @race.RaceName</td>
+                                <td>@GetSurfaceName(race.SurfaceTypeCode)</td>
+                                <td>@race.Distance.ToString("N0") m</td>
+                                <td>@(race.NumberOfStarters?.ToString() ?? "未確定")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </section>
+</section>
+
+@code {
+    private DateOnly? _fromDate;
+    private DateOnly? _toDate;
+    private IReadOnlyList<RaceListItem> _races = [];
+    private bool _isLoading;
+    private string? _errorMessage;
+
+    protected override Task OnInitializedAsync() => SearchAsync();
+
+    private async Task SearchAsync()
+    {
+        _isLoading = true;
+        _errorMessage = null;
+
+        try
+        {
+            _races = await RaceService.SearchAsync(new RaceSearchCriteria(_fromDate, _toDate));
+        }
+        catch (ArgumentException exception)
+        {
+            _errorMessage = exception.Message;
+        }
+        catch (Exception exception)
+        {
+            Logger.LogError(exception, "レース検索に失敗しました。");
+            _errorMessage = "レースを検索できませんでした。SQL Serverの起動と接続設定を確認してください。";
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+
+    private Task ClearFiltersAsync()
+    {
+        _fromDate = null;
+        _toDate = null;
+        return SearchAsync();
+    }
+
+    private static string GetSurfaceName(string surfaceTypeCode) => surfaceTypeCode switch
+    {
+        "TURF" => "芝",
+        "DIRT" => "ダート",
+        _ => surfaceTypeCode
+    };
+}

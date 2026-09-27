@@ -24,6 +24,7 @@
 ```text
 horse-racing-app/
 ├─ AGENTS.md
+├─ HorseRacing.sln
 ├─ database/
 │  ├─ ddl/
 │  │  ├─ 001_create_database.sql
@@ -44,20 +45,24 @@ horse-racing-app/
 ├─ docs/
 │  ├─ application/
 │  │  └─ 00_architecture.md
+│  ├─ development/
+│  │  └─ command_execution_policy.md
 │  └─ database/
 │     ├─ README.md
 │     ├─ CHANGELOG.md
 │     ├─ docs/
 │     ├─ diagram/
 │     └─ image/
+├─ src/
+│  └─ HorseRacing.App/         # Blazor Webアプリ
+├─ tests/
+│  └─ HorseRacing.Tests/       # xUnitテスト
 ├─ docker/
 │  └─ compose.yml
 ├─ .env.example
 ├─ .gitignore
 └─ README.md
 ```
-
-アプリケーションのプロジェクト構成とテストは、実装工程で追加します。
 
 ## ローカル開発環境
 
@@ -67,6 +72,7 @@ horse-racing-app/
 - Docker Desktop
 - WSL2
 - PowerShell 7 推奨
+- .NET 10 SDK
 
 SQL Server本体をWindowsへ直接インストールする必要はありません。
 
@@ -128,6 +134,32 @@ Dockerコンテナ `horse-racing-sqlserver` が起動し、SQL Serverのデー�
 
 アプリ用ユーザーで `HorseRacing` DBへ接続し、スキーマと初期データを確認します。
 
+## アプリケーション起動
+
+先にSQL Serverを起動し、DB初期化を完了してください。開発用接続文字列は、リポジトリへ保存せずUser Secretsへ登録します。
+
+```powershell
+dotnet user-secrets set "ConnectionStrings:HorseRacing" "Server=localhost,1433;Database=HorseRacing;User ID=HorseRacingAppUser;Password=YOUR_APP_PASSWORD;Encrypt=True;TrustServerCertificate=True" --project src/HorseRacing.App/HorseRacing.App.csproj
+```
+
+`YOUR_APP_PASSWORD`は`.env`に設定した`MSSQL_APP_PASSWORD`の値に置き換えてください。値をソース、README、ログへ記載しないでください。
+
+アプリを起動します。
+
+```powershell
+dotnet run --project src/HorseRacing.App/HorseRacing.App.csproj
+```
+
+ブラウザーで `http://localhost:5146` を開きます。現在は開催日の範囲を指定したレース検索に対応し、最大100件を表示します。レースデータがない場合は空の検索結果が表示されます。アプリはローカル利用を前提とし、LANへ公開しないでください。
+
+## テスト
+
+```powershell
+dotnet test HorseRacing.sln
+```
+
+サービスの入力検証と検索処理はDBを使わない単体テストで確認します。Dapperリポジトリの自動統合テストは今後追加します。
+
 ## SQL Server停止
 
 ```powershell
@@ -170,9 +202,9 @@ DB初期化スクリプトを追加
 
 ## 次の作業
 
-次の段階では、決定した方式に沿ってアプリケーション本体を追加します。
+次の段階では、初期のレース検索を基に登録・編集機能を追加します。
 
-1. アプリケーションプロジェクトとローカル起動環境
-2. DB接続とアプリケーション層の実装
-3. レース・出走馬の登録と検索
-4. 自動テスト
+1. Dapperリポジトリの自動統合テスト
+2. 馬の登録・検索
+3. レースへの出走馬登録・検索
+4. 馬の過去出走履歴表示

@@ -1,0 +1,239 @@
+.race-page {
+    width: min(100%, 1240px);
+    margin: 0 auto;
+}
+
+.page-heading {
+    margin-bottom: 1.5rem;
+}
+
+.eyebrow {
+    margin: 0 0 0.35rem;
+    color: #a44832;
+    font-size: 0.72rem;
+    font-weight: 700;
+}
+
+.heading-row {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+}
+
+.heading-row h1 {
+    margin: 0;
+    color: #1e2b26;
+    font-size: 1.7rem;
+    font-weight: 700;
+}
+
+.heading-row p {
+    margin: 0;
+    color: #68736d;
+    font-size: 0.92rem;
+}
+
+.search-toolbar {
+    display: flex;
+    align-items: end;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    padding: 1rem 0;
+    border-top: 1px solid #d7ded9;
+    border-bottom: 1px solid #d7ded9;
+}
+
+.date-filter {
+    display: grid;
+    gap: 0.35rem;
+    color: #4f5d56;
+    font-size: 0.78rem;
+    font-weight: 600;
+}
+
+.date-input {
+    width: 11rem;
+    min-height: 2.5rem;
+    padding: 0.45rem 0.6rem;
+    border: 1px solid #bdc8c1;
+    border-radius: 3px;
+    background: #fff;
+    color: #1e2b26;
+    font: inherit;
+}
+
+.date-separator {
+    padding-bottom: 0.7rem;
+    color: #77827c;
+    font-size: 0.8rem;
+}
+
+.toolbar-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-left: auto;
+}
+
+.search-button,
+.clear-button {
+    min-height: 2.5rem;
+    padding: 0.5rem 1rem;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    font: inherit;
+    font-size: 0.88rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.search-button {
+    background: #245b4d;
+    color: #fff;
+}
+
+.search-button:hover:not(:disabled) {
+    background: #19483d;
+}
+
+.clear-button {
+    border-color: #bdc8c1;
+    background: #fff;
+    color: #34443c;
+}
+
+.clear-button:hover:not(:disabled) {
+    background: #f0f3f0;
+}
+
+.search-button:disabled,
+.clear-button:disabled {
+    cursor: wait;
+    opacity: 0.65;
+}
+
+.results-section {
+    margin-top: 1.5rem;
+}
+
+.results-heading {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.65rem;
+}
+
+.results-heading h2 {
+    margin: 0;
+    color: #27352e;
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.result-count {
+    color: #38483f;
+    font-size: 0.82rem;
+    font-variant-numeric: tabular-nums;
+}
+
+.result-count span {
+    margin-left: 0.35rem;
+    color: #7b8580;
+    font-size: 0.75rem;
+}
+
+.table-scroll {
+    overflow-x: auto;
+    border-top: 2px solid #344a40;
+}
+
+.race-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    font-size: 0.88rem;
+}
+
+.race-table th,
+.race-table td {
+    padding: 0.75rem 0.8rem;
+    border-bottom: 1px solid #e0e5e1;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.race-table th {
+    background: #eef2ee;
+    color: #47564d;
+    font-size: 0.76rem;
+    font-weight: 700;
+}
+
+.race-table td {
+    color: #293730;
+}
+
+.race-table tbody tr:hover {
+    background: #f6f8f5;
+}
+
+.race-number {
+    display: inline-block;
+    min-width: 2.1rem;
+    color: #a44832;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+}
+
+.message,
+.empty-state {
+    padding: 1.25rem 0;
+    color: #66736b;
+    font-size: 0.9rem;
+}
+
+.message-error {
+    color: #a12f2f;
+}
+
+.empty-state p {
+    margin: 0.3rem 0;
+}
+
+.empty-title {
+    color: #34433b;
+    font-weight: 700;
+}
+
+@media (max-width: 680px) {
+    .search-toolbar {
+        align-items: stretch;
+    }
+
+    .date-filter {
+        flex: 1 1 10rem;
+    }
+
+    .date-input {
+        width: 100%;
+    }
+
+    .date-separator {
+        display: none;
+    }
+
+    .toolbar-actions {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    .search-button,
+    .clear-button {
+        flex: 1;
+    }
+
+    .race-table {
+        min-width: 690px;
+    }
+}

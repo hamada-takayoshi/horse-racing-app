@@ -1,0 +1,239 @@
+.page {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+.sidebar {
+    background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
+}
+
+.top-row {
+    background-color: #f7f7f7;
+    border-bottom: 1px solid #d6d5d5;
+    justify-content: flex-end;
+    height: 3.5rem;
+    display: flex;
+    align-items: center;
+}
+
+    .top-row ::deep a, .top-row ::deep .btn-link {
+        white-space: nowrap;
+        margin-left: 1.5rem;
+        text-decoration: none;
+    }
+
+    .top-row ::deep a:hover, .top-row ::deep .btn-link:hover {
+        text-decoration: underline;
+    }
+
+    .top-row ::deep a:first-child {
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+@media (max-width: 640.98px) {
+    .top-row {
+        justify-content: space-between;
+    }
+
+    .top-row ::deep a, .top-row ::deep .btn-link {
+        margin-left: 0;
+    }
+}
+
+@media (min-width: 641px) {
+    .page {
+        flex-direction: row;
+    }
+
+    .sidebar {
+        width: 250px;
+        height: 100vh;
+        position: sticky;
+        top: 0;
+    }
+
+    .top-row {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+    }
+
+    .top-row.auth ::deep a:first-child {
+        flex: 1;
+        text-align: right;
+        width: 0;
+    }
+
+    .top-row, article {
+        padding-left: 2rem !important;
+        padding-right: 1.5rem !important;
+    }
+}
+
+#blazor-error-ui {
+    color-scheme: light only;
+    background: lightyellow;
+    bottom: 0;
+    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+    box-sizing: border-box;
+    display: none;
+    left: 0;
+    padding: 0.6rem 1.25rem 0.7rem 1.25rem;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+}
+
+    #blazor-error-ui .dismiss {
+        cursor: pointer;
+        position: absolute;
+        right: 0.75rem;
+        top: 0.5rem;
+    }
+
+.app-shell {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 224px minmax(0, 1fr);
+    grid-template-rows: 68px minmax(0, 1fr);
+}
+
+.app-header {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0 1.35rem;
+    border-bottom: 1px solid #d8dfda;
+    background: #fff;
+}
+
+.brand-mark {
+    display: grid;
+    width: 38px;
+    height: 38px;
+    place-items: center;
+    border-radius: 4px;
+    background: #b84a32;
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.brand-copy {
+    display: grid;
+    gap: 0.05rem;
+}
+
+.brand-kicker {
+    color: #a44832;
+    font-size: 0.62rem;
+    font-weight: 800;
+}
+
+.brand-title {
+    color: #20342b;
+    font-size: 0.98rem;
+    font-weight: 700;
+}
+
+.local-status {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin-left: auto;
+    color: #5b6b62;
+    font-size: 0.78rem;
+}
+
+.local-status span {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #39805d;
+}
+
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    width: auto !important;
+    height: auto !important;
+    position: static !important;
+    padding: 1.2rem 0.8rem;
+    background: #20342d;
+    background-image: none;
+    color: #edf2ee;
+}
+
+.sidebar-note {
+    margin: auto 0.7rem 0;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.16);
+    color: #aebdb4;
+    font-size: 0.72rem;
+    line-height: 1.7;
+}
+
+.main-content {
+    min-width: 0;
+    padding: 2rem clamp(1rem, 3vw, 2.75rem);
+}
+
+.content-shell {
+    width: min(100%, 1240px);
+    margin: 0 auto;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+#blazor-error-ui {
+    color-scheme: light;
+    right: 1rem;
+    bottom: 1rem;
+    left: 1rem;
+    width: auto;
+    padding: 0.85rem 1rem;
+    border: 1px solid #d9aaa1;
+    border-radius: 4px;
+    background: #fff4f1;
+    color: #762d23;
+    box-shadow: 0 6px 24px rgba(25, 35, 30, 0.14);
+}
+
+#blazor-error-ui .reload {
+    margin-left: 0.75rem;
+    color: #762d23;
+    font-weight: 700;
+}
+
+@media (max-width: 720px) {
+    .app-shell {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-rows: 62px auto minmax(0, 1fr);
+    }
+
+    .app-header {
+        grid-column: 1;
+        padding: 0 1rem;
+    }
+
+    .sidebar {
+        min-height: 0;
+        padding: 0.35rem 0.75rem;
+    }
+
+    .sidebar-note {
+        display: none;
+    }
+
+    .main-content {
+        padding: 1.25rem 1rem 2rem;
+    }
+}
