@@ -17,6 +17,7 @@
 - 当面はローカルPC上で実行し、同じPCのブラウザーから利用する。アプリとDBを外部ネットワークへ公開しない
 - 将来のスマートフォン利用に備えて画面をレスポンシブに設計する。LAN経由の利用は認証などを整備してから対応する
 - アプリケーションの方式・構成の詳細は `docs/application/00_architecture.md` を参照する
+- アプリケーションの実装進捗と次の作業は `docs/application/01_implementation_status.md` を参照する
 - Gitのcommitメッセージは日本語で記載する
 
 ## 現在の構成
@@ -44,7 +45,8 @@ horse-racing-app/
 │     └─ reset-db.ps1
 ├─ docs/
 │  ├─ application/
-│  │  └─ 00_architecture.md
+│  │  ├─ 00_architecture.md
+│  │  └─ 01_implementation_status.md
 │  ├─ development/
 │  │  └─ command_execution_policy.md
 │  └─ database/
